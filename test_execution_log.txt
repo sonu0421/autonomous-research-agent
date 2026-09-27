@@ -1,0 +1,671 @@
+﻿
+--- 1. Testing Search Service ---
+[SearchService] Executing targeted web search for: "Node.js Express AI Agent framework"
+node : [SearchService] Tier 1 (DuckDuckGo library) notice: DDG detected an anomaly in the request, you are likely 
+making requests too quickly.. Trying Tier 2 (DuckDuckGo HTML)...
+At line:1 char:1
++ node tests/testServices.js 2>&1 | Out-File -FilePath "test_execution_ ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ([SearchService]...DuckGo HTML)...:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+[Test] Received 2 search results:
+  Source #1: Building Agent APIs with Express.js - Library (https://www.grizzlypeaksoftware.com/library/building-agent-apis-with-expressjs-by3i9d2w)
+  Snippet: Build REST APIs for AI agents with Express.js including session management, SSE streaming, authentic...
+  Content length: 4000 chars
+  Quality Tier: General Web Source / Aggregator
+  Full Content: true
+  Source #2: How to Build Multi-Agent AI Systems with Node.js (2026 Guide) (https://dev.to/abdullah_faheem_65d133445/how-to-build-multi-agent-ai-systems-with-nodejs-2026-guide-2ebh)
+  Snippet: AI is no longer about single models. In 2026, real-world apps use multi-agent AI systems that... Tag...
+  Content length: 4000 chars
+  Quality Tier: Company Blog / Industry Article
+  Full Content: true
+Γ£à Search Service Test PASSED.
+
+--- 2. Testing Source Quality Classification ---
+  Γ£à arxiv.org/abs/2606.07591: "Official Documentation / Academic Paper"
+  Γ£à github.com/some/repo: "Official Documentation / Academic Paper"
+  Γ£à stanford.edu/research: "Official Documentation / Academic Paper"
+  Γ£à techcrunch.com/ai-article: "Reputable Tech Publication"
+  Γ£à venturebeat.com/story: "Reputable Tech Publication"
+  Γ£à medium.com/@user/ai-blog: "Company Blog / Industry Article"
+  Γ£à kiaantechnology.com/resources/st: "General Web Source / Aggregator"
+  Γ£à remvix.com/blog/roi-2026: "Company Blog / Industry Article"
+Γ£à Source Quality Classification Test PASSED.
+
+--- 3. Testing Evidence Extraction (extractRelevantSnippets) ---
+  Fixture length: 1215 chars (maxChars=800)
+  Extracted snippet (730 chars):
+  "Research note: The deployment of agentic AI systems in enterprise automation workflows reduced human escalations by 31% in 2026 according to industry survey data collected in the second half of the ye..."
+Γ£à Evidence Extraction Test PASSED.
+
+--- 4. Testing Statistics & Evidence Grounding Verification ---
+[Test 4a] Relevance filter: mixed sources...
+[GroqService] Auditing relevance of 2 sources for topic: "AI automation developments 2026" via Groq API
+[GroqService] Verified active Groq models for account: [
+  'canopylabs/orpheus-v1-english',
+  'openai/gpt-oss-20b',
+  'openai/gpt-oss-120b',
+  'canopylabs/orpheus-arabic-saudi',
+  'qwen/qwen3.8-27b',
+  'allam-2-7b'
+]
+[GroqService] Invoking Groq model: "openai/gpt-oss-20b" (Attempt 1/3)...
+
+--- SOURCE RELEVANCE AUDIT EVALUATION (GROQ) ---
+Source [ID 0] (https://example.com/ai-agent-report-2026): Γ£à ACCEPTED
+  Title: AI Agent Benchmark Report 2026
+  Quality: General Web Source / Aggregator
+  Reason: The extracted content reports that 35% of companies deployed LLM autonomous agents in production workflows in midΓÇæ2026, directly addressing AI automation developments for that year.
+Source [ID 1] (https://www.enterprisemobility.com/): Γ¥î REJECTED
+  Title: Enterprise Mobility - Home
+  Quality: General Web Source / Aggregator
+  Reason: The content describes car rental services and transportation technology, which is unrelated to AI automation developments.
+--------------------------------------------------
+
+[GroqService] Audit kept 1/2 sources.
+  Γ£à Irrelevant source rejection PASSED.
+[Test 4b] Grounding: verified stats should pass...
+  Γ£à Verified stat not flagged PASSED.
+[Test 4c] Grounding: fabricated stats on wrong source citation...
+[GroundingVerifier] Flagging ungrounded statistic "$999.99 billion" (digit "999.99" absent in cited source).
+[GroundingVerifier] Flagging ungrounded statistic "CAGR of 99.9%" (digit "99.9" absent in cited source).
+  Γ£à Fabricated stat on wrong source flagged PASSED.
+[Test 4d] Grounding: stat absent from all sources...
+[GroundingVerifier] Flagging ungrounded statistic "$999.99 billion" (digit "999.99" absent in cited source).
+  Γ£à Absent stat flagged PASSED.
+[GroundingVerifier] Flagging ungrounded statistic "CAGR of 99.9%" (digit "99.9" absent in cited source).
+[Test 4e] Snippet-only source labeling...
+  Γ£à Snippet-only source stat correctly accepted PASSED.
+[Test 4f] Blog claim cannot be classified as Primary Evidence...
+  Γ£à Blog claim demotion from Primary Evidence PASSED.
+[Test 4g] Evidence Transparency Notice injection...
+  Γ£à Evidence Transparency Notice injection PASSED.
+Γ£à ALL Grounding Verification Tests PASSED.
+
+--- 5. Testing Domain Diversity Balancing ---
+  Input: 8 sources -> Diversified: 6 sources
+[AgentService] Domain diversity backfilled 1 sources to maintain minimum evidence threshold (3).
+Γ£à Domain Diversity Test PASSED.
+
+--- 6. Testing Report Completeness & Trailing Truncation Cleaning ---
+[GroundingVerifier] Cleaning trailing truncated fragment: "- Four critical pillars underpin modern"
+  Cleaned report end:
+  "
+## Detailed Evidence & Breakthrough Insights
+- Point A: Model Context Protocol is emerging."
+Γ£à Report Completeness & Cleaning Test PASSED.
+
+--- 8. Testing Topic Drift Detection ---
+[TopicDriftDetector] DRIFT DETECTED: "Industrial & Robotic Automation" covers 5/5 sources (100%). Coverage map: {
+  'AI Agents & Autonomous Workflows': 1,
+  'Business Process & RPA Automation': 0,
+  'AI-Assisted Software Development': 0,
+  'Customer Support & Conversational AI': 0,
+  'Industrial & Robotic Automation': 5,
+  'Enterprise Adoption & Governance': 0
+}
+[TopicDriftDetector] Coverage gaps detected (0 sources) in dimensions: [
+  'Business Process & RPA Automation',
+  'AI-Assisted Software Development',
+  'Customer Support & Conversational AI',
+  'Enterprise Adoption & Governance'
+]
+  Drift detected: true
+  Dominant dimension: Industrial & Robotic Automation
+  Coverage gaps: Business Process & RPA Automation, AI-Assisted Software Development, Customer Support & Conversational AI, Enterprise Adoption & Governance
+[TopicDriftDetector] Coverage spread is acceptable. Coverage map: {
+  'AI Agents & Autonomous Workflows': 1,
+  'Business Process & RPA Automation': 1,
+  'AI-Assisted Software Development': 1,
+  'Customer Support & Conversational AI': 1,
+  'Industrial & Robotic Automation': 1,
+  'Enterprise Adoption & Governance': 0
+}
+[TopicDriftDetector] Coverage gaps detected (0 sources) in dimensions: [ 'Enterprise Adoption & Governance' ]
+Γ£à Topic Drift Detection Test PASSED.
+
+--- 9. Testing Subtopic Overrepresentation Detection ---
+[SubtopicChecker] OVERREPRESENTATION: "predictive maintenance" present in 4/5 sources (80%).
+  Fraction: 80% | Overrepresented: true
+Γ£à Subtopic Overrepresentation Test PASSED.
+
+--- 11. Testing Coverage Gap Reporting Without Fabrication ---
+[TopicDriftDetector] DRIFT DETECTED: "AI Agents & Autonomous Workflows" covers 2/2 sources (100%). Coverage map: {
+  'AI Agents & Autonomous Workflows': 2,
+  'Business Process & RPA': 0,
+  'AI-Assisted Software Development': 0
+}
+[TopicDriftDetector] Coverage gaps detected (0 sources) in dimensions: [ 'Business Process & RPA', 'AI-Assisted 
+Software Development' ]
+  Gaps detected: [Business Process & RPA, AI-Assisted Software Development]
+  Drift detected: true
+  Coverage map: {
+  'AI Agents & Autonomous Workflows': 2,
+  'Business Process & RPA': 0,
+  'AI-Assisted Software Development': 0
+}
+Γ£à Coverage Gap Reporting Test PASSED.
+
+--- 8. Testing Non-AI Topic Relevance Filtering ---
+Γ£à Non-AI Topic Relevance Filtering Test PASSED.
+
+--- 9. Testing Retry-After Duration Parsing & Limits ---
+  Parsed delay for retry-after 4.92s header: 5420ms
+  Parsed delay for error message "Please try again in 4.92s.": 5420ms
+  Parsed delay for 12.5s: 13000ms
+  Parsed delay for 17m45s (capped at 60s max): 60000ms
+Γ£à Retry-After Duration Parsing & Limits Test PASSED.
+
+--- 10. Testing Irrelevant Source Rejection ---
+[GroqService] Auditing relevance of 3 sources for topic: "Latest developments in AI automation in 2026" via Groq API
+[GroqService] Invoking Groq model: "openai/gpt-oss-20b" (Attempt 1/3)...
+
+--- SOURCE RELEVANCE AUDIT EVALUATION (GROQ) ---
+Source [ID 0] (https://www.enterprisemobility.com/): Γ¥î REJECTED
+  Title: Enterprise Mobility Car Rental
+  Quality: General Web Source / Aggregator
+  Reason: The extracted content discusses car rental services and transportation technology, which is unrelated to AI automation.
+Source [ID 1] (https://homeautomationhub.com/guide): Γ¥î REJECTED
+  Title: Home Automation Hub Guide
+  Quality: General Web Source / Aggregator
+  Reason: The content focuses on home HVAC, lighting, and security automation, not on AI automation developments.
+Source [ID 2] (https://example.com/ai-agents-2026): Γ£à ACCEPTED
+  Title: AI Agentic Workflow Automation 2026
+  Quality: General Web Source / Aggregator
+  Reason: The extracted content explicitly mentions enterprises deploying AI autonomous agents in 2026 to automate complex multi-step workflows, directly addressing the research topic.
+--------------------------------------------------
+
+[GroqService] Audit kept 1/3 sources.
+  Accepted 1/3 sources. Correctly rejected off-topic sources.
+Γ£à Irrelevant Source Rejection Test PASSED.
+
+--- 7. Testing Groq Service (Live API) ---
+[Test] decomposeTopic for: "Impact of AI Agents on Software Engineering"...
+[GroqService] Decomposing research topic: "Impact of AI Agents on Software Engineering" via Groq API...
+[GroqService] Invoking Groq model: "openai/gpt-oss-20b" (Attempt 1/3)...
+[GroqService] Engineered Search Queries: [
+  'AI code generation refactoring 2025 software engineering',
+  'AI automated testing QA 2026 software engineering',
+  'AI project estimation scheduling 2024 software engineering',
+  'AI security vulnerability detection 2025 software engineering',
+  'AI developer productivity collaboration 2026 software engineering',
+  'AI legacy modernization maintenance 2024 software engineering'
+]
+[Test] Sub-questions: [
+  'AI code generation refactoring 2025 software engineering',
+  'AI automated testing QA 2026 software engineering',
+  'AI project estimation scheduling 2024 software engineering',
+  'AI security vulnerability detection 2025 software engineering',
+  'AI developer productivity collaboration 2026 software engineering',
+  'AI legacy modernization maintenance 2024 software engineering'
+]
+[Test] generateResearchReport with quality-labeled sources...
+[GroqService] Generating research report for topic: "Impact of AI Agents on Software Engineering" with 2 verified sources via Groq API.
+[GroqService] Invoking Groq model: "openai/gpt-oss-20b" (Attempt 1/3)...
+[Test] Report preview (200 chars):
+ # Impact of AI Agents on Software Engineering  
+*A strictly evidenceΓÇægrounded research report (GitHubΓÇæFlavored Markdown)*  
+
+---
+
+## Executive Summary
+
+> [!NOTE]
+> **Evidence Transparency Notice**: Th...
+Γ£à Groq Service Test PASSED.
+
+≡ƒÄë ALL CORE SERVICES TESTS PASSED SUCCESSFULLY!
+
+
+========================================
+RUNNING API ROUTE TESTS
+========================================
+
+
+==========================================
+≡ƒÜÇ RUNNING AUTOMATED API ROUTE TESTS
+==========================================
+
+[TestServer] Test instance running at http://localhost:65289
+
+--- 1. Testing GET /api/health ---
+  Γ£à PASSED: Health endpoint returns HTTP 200
+  Γ£à PASSED: Health response contains status ok
+
+--- 2. Testing POST /api/research Validation ---
+  Γ£à PASSED: Rejects empty topic with HTTP 400
+  Γ£à PASSED: Returns clear validation error for empty topic
+  Γ£à PASSED: Rejects topic under 3 chars with HTTP 400
+  Γ£à PASSED: Returns clear validation error for short topic
+
+--- 3. Testing POST /api/research Job Creation ---
+[AgentService] [INITIATED] Starting autonomous research on topic: "Autonomous AI Research Systems"
+[AgentService] [DECOMPOSING] Analyzing topic and engineering targeted search queries via Groq API...
+[GroqService] Decomposing research topic: "Autonomous AI Research Systems" via Groq API...
+  Γ£à PASSED: Initiates valid research with HTTP 202 Accepted
+  Γ£à PASSED: Response contains success=true
+  Γ£à PASSED: Returns generated taskId string
+  Γ£à PASSED: Duplicate topic submission returns HTTP 202
+  Γ£à PASSED: Returns existing running taskId for duplicate topic submission
+
+--- 4. Testing GET /api/research/:id/status ---
+  Γ£à PASSED: Returns HTTP 404 for unknown task ID
+  Γ£à PASSED: Returns HTTP 200 for valid task ID
+  Γ£à PASSED: Returned job ID matches request
+  Γ£à PASSED: Job status is valid status string
+
+--- 5. Testing GET /api/export/:filename & Security Checks ---
+  Γ£à PASSED: Blocks directory traversal attempt (../) with HTTP 400
+  Γ£à PASSED: Blocks non-.md extension requests with HTTP 400
+  Γ£à PASSED: Returns HTTP 404 for missing markdown report
+  Γ£à PASSED: Successfully downloads valid markdown report
+  Γ£à PASSED: Sets Content-Type to text/markdown
+  Γ£à PASSED: Export file content matches saved markdown
+
+==========================================
+SUMMARY: 21 PASSED, 0 FAILED.
+==========================================
+
+[GroqService] Verified active Groq models for account: [
+  'canopylabs/orpheus-arabic-saudi',
+  'allam-2-7b',
+  'qwen/qwen3.8-27b',
+  'openai/gpt-oss-120b',
+  'openai/gpt-oss-20b',
+  'canopylabs/orpheus-v1-english'
+]
+[GroqService] Invoking Groq model: "openai/gpt-oss-20b" (Attempt 1/3)...
+[GroqService] Engineered Search Queries: [
+  'AI autonomous research workflow 2026',
+  'LLM automated literature review 2026',
+  'AI autonomous experimental design 2026',
+  'AI autonomous data curation 2026',
+  'AI autonomous hypothesis generation 2026',
+  'AI autonomous research governance 2026'
+]
+[AgentService] [DECOMPOSED] Generated 6 research sub-queries.
+[AgentService] [SEARCHING] Executing live web search using unwrapped target URLs...
+[AgentService] [SEARCHING_SUBQUERY] Searching web query 1/6: "AI autonomous research workflow 2026"
+[SearchService] Executing targeted web search for: "AI autonomous research workflow 2026"
+node : [SearchService] Tier 1 (DuckDuckGo library) notice: DDG detected an anomaly in the request, you are likely 
+making requests too quickly.. Trying Tier 2 (DuckDuckGo HTML)...
+At line:1 char:368
++ ... txt" -Encoding utf8 -Append; node tests/testApiRoutes.js 2>&1 | Out-F ...
++                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ([SearchService]...DuckGo HTML)...:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+[AgentService] [SEARCHING_SUBQUERY] Searching web query 2/6: "LLM automated literature review 2026"
+[SearchService] Executing targeted web search for: "LLM automated literature review 2026"
+[SearchService] Tier 1 (DuckDuckGo library) notice: DDG detected an anomaly in the request, you are likely making 
+requests too quickly.. Trying Tier 2 (DuckDuckGo HTML)...
+[AgentService] [SEARCHING_SUBQUERY] Searching web query 3/6: "AI autonomous experimental design 2026"
+[SearchService] Executing targeted web search for: "AI autonomous experimental design 2026"
+[SearchService] Tier 1 (DuckDuckGo library) notice: DDG detected an anomaly in the request, you are likely making 
+requests too quickly.. Trying Tier 2 (DuckDuckGo HTML)...
+[AgentService] [SEARCHING_SUBQUERY] Searching web query 4/6: "AI autonomous data curation 2026"
+[SearchService] Executing targeted web search for: "AI autonomous data curation 2026"
+[SearchService] Tier 1 (DuckDuckGo library) notice: DDG detected an anomaly in the request, you are likely making 
+requests too quickly.. Trying Tier 2 (DuckDuckGo HTML)...
+[AgentService] [SEARCHING_SUBQUERY] Searching web query 5/6: "AI autonomous hypothesis generation 2026"
+[SearchService] Executing targeted web search for: "AI autonomous hypothesis generation 2026"
+[SearchService] Tier 1 (DuckDuckGo library) notice: DDG detected an anomaly in the request, you are likely making 
+requests too quickly.. Trying Tier 2 (DuckDuckGo HTML)...
+[AgentService] [SEARCHING_SUBQUERY] Searching web query 6/6: "AI autonomous research governance 2026"
+[SearchService] Executing targeted web search for: "AI autonomous research governance 2026"
+[SearchService] Tier 1 (DuckDuckGo library) notice: DDG detected an anomaly in the request, you are likely making 
+requests too quickly.. Trying Tier 2 (DuckDuckGo HTML)...
+[AgentService] [DEDUPLICATING] Filtering duplicate URLs across search queries...
+[AgentService] [DEDUPLICATED] Collected 12 unique raw web sources.
+[AgentService] [RELEVANCE_FILTERING] Auditing source relevance via Groq AI filter...
+[GroqService] Auditing relevance of 12 sources for topic: "Autonomous AI Research Systems" via Groq API
+[GroqService] Invoking Groq model: "openai/gpt-oss-20b" (Attempt 1/3)...
+
+--- SOURCE RELEVANCE AUDIT EVALUATION (GROQ) ---
+Source [ID 0] (https://ai.google/): Γ¥î REJECTED
+  Title: Google AI - How we're making AI helpful for everyone
+  Quality: General Web Source / Aggregator
+  Reason: Content is a random collection of prompts and does not discuss autonomous AI research systems.
+Source [ID 1] (https://deepai.org/): Γ¥î REJECTED
+  Title: DeepAI
+  Quality: General Web Source / Aggregator
+  Reason: Describes a general AI platform but contains no mention of autonomous AI research systems.
+Source [ID 2] (https://en.m.wikipedia.org/wiki/Artificial_intelligence): Γ¥î REJECTED
+  Title: Artificial intelligence - Wikipedia
+  Quality: General Web Source / Aggregator
+  Reason: Provides a general definition of AI; no reference to autonomous AI research systems.
+Source [ID 3] (https://gemini.google.com/): Γ¥î REJECTED
+  Title: Google Gemini
+  Quality: General Web Source / Aggregator
+  Reason: Snippet only describes Gemini as an AI assistant; no discussion of autonomous research.
+Source [ID 4] (https://chatgpt.com/): Γ¥î REJECTED
+  Title: ChatGPT: Chat, Work, Create & Code with AI
+  Quality: General Web Source / Aggregator
+  Reason: Generic description of ChatGPT; no content on autonomous AI research systems.
+Source [ID 5] (https://www.perplexity.ai/): Γ¥î REJECTED
+  Title: Perplexity AI
+  Quality: General Web Source / Aggregator
+  Reason: Generic description of Perplexity AI; no mention of autonomous research.
+Source [ID 6] (https://www.geeksforgeeks.org/artificial-intelligence/large-language-model-llm/): Γ¥î REJECTED
+  Title: Introduction to Large Language Model (LLM) - GeeksforGeeks
+  Quality: General Web Source / Aggregator
+  Reason: General AI topics; no reference to autonomous AI research systems.
+Source [ID 7] (https://en.wikipedia.org/wiki/Large_language_model): Γ¥î REJECTED
+  Title: Large language model - Wikipedia
+  Quality: General Web Source / Aggregator
+  Reason: General LLM overview; does not address autonomous AI research systems.
+Source [ID 8] (https://www.geeksforgeeks.org/deep-learning/large-language-model-llm-tutorial/): Γ¥î REJECTED
+  Title: Large Language Model (LLM) Tutorial - GeeksforGeeks
+  Quality: General Web Source / Aggregator
+  Reason: Tutorial on LLMs; no content about autonomous AI research systems.
+Source [ID 9] (https://cloud.google.com/ai/llms): Γ¥î REJECTED
+  Title: Large Language Models (LLMs) with Google AI | Google Cloud
+  Quality: General Web Source / Aggregator
+  Reason: Describes Google Cloud LLM services; no mention of autonomous AI research systems.
+Source [ID 10] (https://huggingface.co/blog/daya-shankar/open-source-llms): Γ¥î REJECTED
+  Title: Best Open-Source LLM Models in 2026: Coding, Local, Agentic AI ...
+  Quality: Company Blog / Industry Article
+  Reason: Blog about openΓÇæsource LLMs; does not discuss autonomous AI research systems.
+Source [ID 11] (https://freeacademy.ai/blog/what-is-an-llm-beginners-guide-2026): Γ¥î REJECTED
+  Title: What Is an LLM? Beginner's Guide to AI in 2026
+  Quality: Company Blog / Industry Article
+  Reason: Brief definition of LLMs; no reference to autonomous AI research systems.
+--------------------------------------------------
+
+[GroqService] Audit kept 0/12 sources.
+[AgentService] [RELEVANCE_FILTERED] Verified 0/12 sources as directly relevant to "Autonomous AI Research Systems".
+[AgentService] [ANALYZING_DIMENSIONS] Identifying research dimensions for topic coverage tracking...
+[GroqService] Analyzing topic dimensions for: "Autonomous AI Research Systems" via Groq API...
+[GroqService] Invoking Groq model: "openai/gpt-oss-20b" (Attempt 1/3)...
+[GroqService] Identified topic dimensions: [
+  'Autonomous Experimentation & Simulation',
+  'Self-Improving Models & Meta-Learning',
+  'Automated Hypothesis Generation & Discovery',
+  'Autonomous Data Acquisition & Curation',
+  'Autonomous Evaluation & Validation',
+  'AI-Assisted Software Development'
+]
+[AgentService] [DIMENSIONS_IDENTIFIED] Identified 6 research dimensions: Autonomous Experimentation & Simulation, Self-Improving Models & Meta-Learning, Automated Hypothesis Generation & Discovery, Autonomous Data Acquisition & Curation, Autonomous Evaluation & Validation, AI-Assisted Software Development
+[AgentService] [INSUFFICIENT_EVIDENCE] Collected evidence is sparse (0/5 target sources). Generating refined search queries via Groq...
+[GroqService] Refining search queries for topic: "Autonomous AI Research Systems" via Groq API...
+[GroqService] Invoking Groq model: "openai/gpt-oss-20b" (Attempt 1/3)...
+[AgentService] [REFINING_QUERIES] Engineered 3 refined search queries targeting coverage gaps.
+[AgentService] [SEARCHING_REFINED_QUERY] Searching refined web query 1/3: "AI autonomous peer review system 2026"
+[SearchService] Executing targeted web search for: "AI autonomous peer review system 2026"
+[SearchService] Tier 1 (DuckDuckGo library) notice: DDG detected an anomaly in the request, you are likely making 
+requests too quickly.. Trying Tier 2 (DuckDuckGo HTML)...
+[AgentService] [SEARCHING_REFINED_QUERY] Searching refined web query 2/3: "AI autonomous research funding proposal generator 2026"
+[SearchService] Executing targeted web search for: "AI autonomous research funding proposal generator 2026"
+[SearchService] Tier 1 (DuckDuckGo library) notice: DDG detected an anomaly in the request, you are likely making 
+requests too quickly.. Trying Tier 2 (DuckDuckGo HTML)...
+[AgentService] [SEARCHING_REFINED_QUERY] Searching refined web query 3/3: "AI autonomous research reproducibility monitoring platform 2026"
+[SearchService] Executing targeted web search for: "AI autonomous research reproducibility monitoring platform 2026"
+[SearchService] Tier 1 (DuckDuckGo library) notice: DDG detected an anomaly in the request, you are likely making 
+requests too quickly.. Trying Tier 2 (DuckDuckGo HTML)...
+[AgentService] [AUDITING_REFINED_SOURCES] Auditing 12 additional candidate sources...
+[GroqService] Auditing relevance of 12 sources for topic: "Autonomous AI Research Systems" via Groq API
+[GroqService] Invoking Groq model: "openai/gpt-oss-20b" (Attempt 1/3)...
+
+--- SOURCE RELEVANCE AUDIT EVALUATION (GROQ) ---
+Source [ID 0] (https://arxiv.org/abs/2604.13940): Γ¥î REJECTED
+  Title: AI-Assisted Peer Review at Scale: The AAAI-26 AI Review Pilot
+  Quality: Official Documentation / Academic Paper
+  Reason: The extracted content discusses AI-assisted peer review, not autonomous AI research systems.
+Source [ID 1] (https://manusights.com/blog/state-of-peer-review-2026): Γ¥î REJECTED
+  Title: State of Peer Review 2026: What Is Changing Fastest
+  Quality: Company Blog / Industry Article
+  Reason: The content focuses on peer review workflow and tools, not autonomous AI research systems.
+Source [ID 2] (https://www.enago.com/responsible-ai-movement/resources/ai-scientists-autonomous-research-systems-2026/): Γ£à ACCEPTED
+  Title: AI Scientists Are Here: What Researchers Need to Know in 2026 - Enago
+  Quality: General Web Source / Aggregator
+  Reason: The extracted content describes an autonomous system that generates hypotheses, designs experiments, runs them, writes manuscripts, and reviews its own output, directly addressing autonomous AI research systems.
+Source [ID 3] (https://aaai.org/wp-content/uploads/2026/01/The-AAAI-2026-AI-Assisted-Peer-Review-Pilot-Program.pdf): Γ¥î REJECTED
+  Title: PDF The AAAI-2026 AI-Assisted Peer Review Pilot Program
+  Quality: General Web Source / Aggregator
+  Reason: The content is about AI-generated peer reviews, not autonomous research systems.
+Source [ID 4] (https://www.journalmetrics.org/blog/ai-peer-review-policies-medical-journals-2026): Γ¥î REJECTED
+  Title: AI in Peer Review: What the New Journal Policies Mean for Authors in 2026
+  Quality: Company Blog / Industry Article
+  Reason: The content discusses journal policies on AI in peer review, not autonomous AI research systems.
+Source [ID 5] (https://aaai.org/wp-content/uploads/2025/08/FAQ-for-the-AI-Assisted-Peer-Review-Process-Pilot-Program.pdf): Γ¥î REJECTED
+  Title: PDF Overview of the AI Review System - aaai.org
+  Quality: General Web Source / Aggregator
+  Reason: The content describes an AI review system for peer review, not autonomous research systems.
+Source [ID 6] (https://ai.google/): Γ¥î REJECTED
+  Title: Google AI - How we're making AI helpful for everyone
+  Quality: General Web Source / Aggregator
+  Reason: The content is a generic AI platform landing page with no mention of autonomous research systems.
+Source [ID 7] (https://deepai.org/): Γ¥î REJECTED
+  Title: DeepAI
+  Quality: General Web Source / Aggregator
+  Reason: The content is a generic creative AI platform description, not about autonomous research systems.
+Source [ID 8] (https://en.m.wikipedia.org/wiki/Artificial_intelligence): Γ¥î REJECTED
+  Title: Artificial intelligence - Wikipedia
+  Quality: General Web Source / Aggregator
+  Reason: The content is a general Wikipedia definition of AI, not specific to autonomous research systems.
+Source [ID 9] (https://gemini.google.com/): Γ¥î REJECTED
+  Title: Google Gemini
+  Quality: General Web Source / Aggregator
+  Reason: The content is a generic description of Google Gemini, not about autonomous research systems.
+Source [ID 10] (https://chatgpt.com/): Γ¥î REJECTED
+  Title: ChatGPT: Chat, Work, Create & Code with AI
+  Quality: General Web Source / Aggregator
+  Reason: The content is a generic description of ChatGPT, not about autonomous research systems.
+Source [ID 11] (https://www.perplexity.ai/): Γ¥î REJECTED
+  Title: Perplexity AI
+  Quality: General Web Source / Aggregator
+  Reason: The content is a generic description of Perplexity AI, not about autonomous research systems.
+--------------------------------------------------
+
+[GroqService] Audit kept 1/12 sources.
+[AgentService] [REFINED_SOURCES_VERIFIED] Total verified relevant sources increased to 1.
+[AgentService] [DOMAIN_DIVERSIFIED] Domain diversity applied: retained 1 high-quality sources across distinct domains.
+[TopicDriftDetector] Coverage spread is acceptable. Coverage map: {
+  'Autonomous Experimentation & Simulation': 0,
+  'Self-Improving Models & Meta-Learning': 0,
+  'Automated Hypothesis Generation & Discovery': 0,
+  'Autonomous Data Acquisition & Curation': 0,
+  'Autonomous Evaluation & Validation': 0,
+  'AI-Assisted Software Development': 0
+}
+[TopicDriftDetector] Coverage gaps detected (0 sources) in dimensions: [
+  'Autonomous Experimentation & Simulation',
+  'Self-Improving Models & Meta-Learning',
+  'Automated Hypothesis Generation & Discovery',
+  'Autonomous Data Acquisition & Curation',
+  'Autonomous Evaluation & Validation',
+  'AI-Assisted Software Development'
+]
+[AgentService] [COVERAGE_WARNING] Final coverage check: 6/6 dimensions have no matching sources. Covered 0/6 dimensions. Gaps: [Autonomous Experimentation & Simulation, Self-Improving Models & Meta-Learning, Automated Hypothesis Generation & Discovery, Autonomous Data Acquisition & Curation, Autonomous Evaluation & Validation, AI-Assisted Software Development]. Report will disclose gaps.
+[AgentService] [ANALYZING] Synthesizing verified web evidence into structured report via Groq API...
+[GroqService] Generating research report for topic: "Autonomous AI Research Systems" with 1 verified sources via Groq API.
+[GroqService] Invoking Groq model: "openai/gpt-oss-20b" (Attempt 1/3)...
+[GroqService] Rate limit hit (HTTP 429) on "openai/gpt-oss-20b". Waiting 14.50s before retry 1/2...
+[GroqService] Invoking Groq model: "openai/gpt-oss-20b" (Attempt 2/3)...
+[GroqService] Rate limit hit (HTTP 429) on "openai/gpt-oss-20b". Waiting 1.50s before retry 2/2...
+[GroqService] Invoking Groq model: "openai/gpt-oss-20b" (Attempt 3/3)...
+[AgentService] [REPORT_GENERATED] Structured research report generated successfully.
+[AgentService] [EXPORTING] Saving research report to exports directory...
+[AgentService] [COMPLETED] Research task completed. Report saved to: C:\Users\91767\Downloads\autonomous-research-agent\exports\autonomous_ai_research_systems_1790512617347.md
+
+
+========================================
+RUNNING END-TO-END INTEGRATION TESTS
+========================================
+
+
+==========================================
+≡ƒÜÇ RUNNING END-TO-END FRONTEND & BACKEND INTEGRATION TESTS
+==========================================
+
+
+--- 1. Testing Static Assets Serving ---
+  Γ£à PASSED: index.html served with HTTP 200
+  Γ£à PASSED: index.html contains expected header title
+  Γ£à PASSED: style.css served with HTTP 200
+  Γ£à PASSED: app.js served with HTTP 200
+
+--- 2. Testing API Lifecycle & Polling ---
+[AgentService] [INITIATED] Starting autonomous research on topic: "Next Generation Solar Panel Efficiency 2026"
+[AgentService] [DECOMPOSING] Analyzing topic and engineering targeted search queries via Groq API...
+[GroqService] Decomposing research topic: "Next Generation Solar Panel Efficiency 2026" via Groq API...
+  Γ£à PASSED: POST /api/research returns HTTP 202
+  Γ£à PASSED: Returns valid taskId
+  Γ£à PASSED: GET status returns HTTP 200
+  Γ£à PASSED: Task ID matches in job status
+  Γ£à PASSED: Status is a valid lifecycle state
+
+==========================================
+E2E SUMMARY: 9 PASSED, 0 FAILED.
+==========================================
+
+[GroqService] Verified active Groq models for account: [
+  'allam-2-7b',
+  'canopylabs/orpheus-v1-english',
+  'openai/gpt-oss-20b',
+  'canopylabs/orpheus-arabic-saudi',
+  'qwen/qwen3.8-27b',
+  'openai/gpt-oss-120b'
+]
+[GroqService] Invoking Groq model: "openai/gpt-oss-20b" (Attempt 1/3)...
+[GroqService] Engineered Search Queries: [
+  'AI optimized perovskite tandem cells 2026',
+  'AI guided manufacturing of high-efficiency PV 2026',
+  'AI integrated storage for solar PV 2026',
+  'AI smart grid management for solar 2026',
+  'AI cost modeling of next-gen solar 2026',
+  'AI lifecycle assessment of solar panels 2026'
+]
+[AgentService] [DECOMPOSED] Generated 6 research sub-queries.
+[AgentService] [SEARCHING] Executing live web search using unwrapped target URLs...
+[AgentService] [SEARCHING_SUBQUERY] Searching web query 1/6: "AI optimized perovskite tandem cells 2026"
+[SearchService] Executing targeted web search for: "AI optimized perovskite tandem cells 2026"
+node : [SearchService] Tier 1 (DuckDuckGo library) notice: DDG detected an anomaly in the request, you are likely 
+making requests too quickly.. Trying Tier 2 (DuckDuckGo HTML)...
+At line:1 char:381
++ ... n_log.txt" -Encoding utf8 -Append; node tests/testE2E.js 2>&1 | Out-F ...
++                                        ~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ([SearchService]...DuckGo HTML)...:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+[AgentService] [SEARCHING_SUBQUERY] Searching web query 2/6: "AI guided manufacturing of high-efficiency PV 2026"
+[SearchService] Executing targeted web search for: "AI guided manufacturing of high-efficiency PV 2026"
+[SearchService] Tier 1 (DuckDuckGo library) notice: DDG detected an anomaly in the request, you are likely making 
+requests too quickly.. Trying Tier 2 (DuckDuckGo HTML)...
+[AgentService] [SEARCHING_SUBQUERY] Searching web query 3/6: "AI integrated storage for solar PV 2026"
+[SearchService] Executing targeted web search for: "AI integrated storage for solar PV 2026"
+[SearchService] Tier 1 (DuckDuckGo library) notice: DDG detected an anomaly in the request, you are likely making 
+requests too quickly.. Trying Tier 2 (DuckDuckGo HTML)...
+[AgentService] [SEARCHING_SUBQUERY] Searching web query 4/6: "AI smart grid management for solar 2026"
+[SearchService] Executing targeted web search for: "AI smart grid management for solar 2026"
+[SearchService] Tier 1 (DuckDuckGo library) notice: DDG detected an anomaly in the request, you are likely making 
+requests too quickly.. Trying Tier 2 (DuckDuckGo HTML)...
+[AgentService] [SEARCHING_SUBQUERY] Searching web query 5/6: "AI cost modeling of next-gen solar 2026"
+[SearchService] Executing targeted web search for: "AI cost modeling of next-gen solar 2026"
+[SearchService] Tier 1 (DuckDuckGo library) notice: DDG detected an anomaly in the request, you are likely making 
+requests too quickly.. Trying Tier 2 (DuckDuckGo HTML)...
+[AgentService] [SEARCHING_SUBQUERY] Searching web query 6/6: "AI lifecycle assessment of solar panels 2026"
+[SearchService] Executing targeted web search for: "AI lifecycle assessment of solar panels 2026"
+[SearchService] Tier 1 (DuckDuckGo library) notice: DDG detected an anomaly in the request, you are likely making 
+requests too quickly.. Trying Tier 2 (DuckDuckGo HTML)...
+[AgentService] [DEDUPLICATING] Filtering duplicate URLs across search queries...
+[AgentService] [DEDUPLICATED] Collected 11 unique raw web sources.
+[AgentService] [RELEVANCE_FILTERING] Auditing source relevance via Groq AI filter...
+[GroqService] Auditing relevance of 11 sources for topic: "Next Generation Solar Panel Efficiency 2026" via Groq API
+[GroqService] Invoking Groq model: "openai/gpt-oss-20b" (Attempt 1/3)...
+
+--- SOURCE RELEVANCE AUDIT EVALUATION (GROQ) ---
+Source [ID 0] (https://energy-solutions.co/open-ip-vault/assets/solar-wind/solar-wind-perovskite-silicon-tandem-2026): Γ£à ACCEPTED
+  Title: 2026 Engineering Hack: Perovskite-Silicon Tandem Solar Cells with Self ...
+  Quality: General Web Source / Aggregator
+  Reason: Discusses 2026 perovskiteΓÇæsilicon tandem cells achieving 38% efficiency and 10ΓÇæyear outdoor stability, directly addressing nextΓÇægeneration solar panel efficiency.
+Source [ID 1] (https://www.science.org/doi/10.1126/science.aef1620): Γ£à ACCEPTED
+  Title: AI-guided design of efficient perovskite solar cells ... - AAAS
+  Quality: Official Documentation / Academic Paper
+  Reason: Reports AIΓÇæguided design of perovskite solar cells, providing technical evidence on efficiency improvements relevant to 2026.
+Source [ID 2] (https://energy-solutions.co/open-ip-vault/assets/solar-wind/solar-wind-perovskite-silicon-tandem): Γ£à ACCEPTED
+  Title: 2026 Engineering Hack: Perovskite-Silicon Tandem Cell with Self-Healing ...
+  Quality: General Web Source / Aggregator
+  Reason: Describes a 2026 hack integrating selfΓÇæhealing 2D perovskite interlayer and AIΓÇæoptimized barrier, boosting efficiency to 38% and lifespan, relevant to nextΓÇægeneration efficiency.
+Source [ID 3] (https://link.springer.com/article/10.1007/s40820-026-02291-9): Γ£à ACCEPTED
+  Title: Artificial Intelligence-Guided Cosolvent Design for High-Performance ...
+  Quality: General Web Source / Aggregator
+  Reason: Highlights AIΓÇæguided cosolvent strategy for perovskite/silicon tandem cells, contributing to highΓÇæperformance solar cells for 2026.
+Source [ID 4] (https://internet-pros.com/blog/perovskite-tandem-solar-cells-oxford-pv-qcells-longi-2026/): Γ£à ACCEPTED
+  Title: Perovskite Tandem Solar Cells 2026 | Internet Pros
+  Quality: Company Blog / Industry Article
+  Reason: Blog outlines companies pushing past 30% efficiency in 2026 perovskite tandem solar cells, directly relevant to nextΓÇægeneration efficiency.
+Source [ID 5] (https://ai.google/): Γ¥î REJECTED
+  Title: Google AI - How we're making AI helpful for everyone
+  Quality: General Web Source / Aggregator
+  Reason: General AI landing page unrelated to solar technology.
+Source [ID 6] (https://deepai.org/): Γ¥î REJECTED
+  Title: DeepAI
+  Quality: General Web Source / Aggregator
+  Reason: General AI platform description unrelated to solar panels.
+Source [ID 7] (https://en.m.wikipedia.org/wiki/Artificial_intelligence): Γ¥î REJECTED
+  Title: Artificial intelligence - Wikipedia
+  Quality: General Web Source / Aggregator
+  Reason: Wikipedia AI definition unrelated to solar technology.
+Source [ID 8] (https://gemini.google.com/): Γ¥î REJECTED
+  Title: Google Gemini
+  Quality: General Web Source / Aggregator
+  Reason: Google Gemini landing page unrelated to solar panels.
+Source [ID 9] (https://chatgpt.com/): Γ¥î REJECTED
+  Title: ChatGPT: Chat, Work, Create & Code with AI
+  Quality: General Web Source / Aggregator
+  Reason: ChatGPT landing page unrelated to solar panels.
+Source [ID 10] (https://www.perplexity.ai/): Γ¥î REJECTED
+  Title: Perplexity AI
+  Quality: General Web Source / Aggregator
+  Reason: Perplexity AI landing page unrelated to solar panels.
+--------------------------------------------------
+
+[GroqService] Audit kept 5/11 sources.
+[AgentService] [RELEVANCE_FILTERED] Verified 5/11 sources as directly relevant to "Next Generation Solar Panel Efficiency 2026".
+[AgentService] [ANALYZING_DIMENSIONS] Identifying research dimensions for topic coverage tracking...
+[GroqService] Analyzing topic dimensions for: "Next Generation Solar Panel Efficiency 2026" via Groq API...
+[GroqService] Invoking Groq model: "openai/gpt-oss-20b" (Attempt 1/3)...
+[GroqService] Identified topic dimensions: [
+  'Perovskite Tandem Solar Cells',
+  'Quantum Dot Photovoltaics',
+  'Advanced Thin-Film Materials',
+  'Thermal Management & Heat Dissipation',
+  'Manufacturing & Scalability'
+]
+[AgentService] [DIMENSIONS_IDENTIFIED] Identified 5 research dimensions: Perovskite Tandem Solar Cells, Quantum Dot Photovoltaics, Advanced Thin-Film Materials, Thermal Management & Heat Dissipation, Manufacturing & Scalability
+[AgentService] [DOMAIN_DIVERSIFIED] Domain diversity applied: retained 5 high-quality sources across distinct domains.
+[TopicDriftDetector] DRIFT DETECTED: "Perovskite Tandem Solar Cells" covers 5/5 sources (100%). Coverage map: {
+  'Perovskite Tandem Solar Cells': 5,
+  'Quantum Dot Photovoltaics': 3,
+  'Advanced Thin-Film Materials': 0,
+  'Thermal Management & Heat Dissipation': 0,
+  'Manufacturing & Scalability': 0
+}
+[TopicDriftDetector] Coverage gaps detected (0 sources) in dimensions: [
+  'Advanced Thin-Film Materials',
+  'Thermal Management & Heat Dissipation',
+  'Manufacturing & Scalability'
+]
+[AgentService] [COVERAGE_WARNING] Final coverage check: drift toward "Perovskite Tandem Solar Cells". Covered 2/5 dimensions. Gaps: [Advanced Thin-Film Materials, Thermal Management & Heat Dissipation, Manufacturing & Scalability]. Report will disclose gaps.
+[AgentService] [ANALYZING] Synthesizing verified web evidence into structured report via Groq API...
+[GroqService] Generating research report for topic: "Next Generation Solar Panel Efficiency 2026" with 5 verified sources via Groq API.
+[GroqService] Invoking Groq model: "openai/gpt-oss-20b" (Attempt 1/3)...
+[GroqService] Rate limit hit (HTTP 429) on "openai/gpt-oss-20b". Waiting 15.50s before retry 1/2...
+[GroqService] Invoking Groq model: "openai/gpt-oss-20b" (Attempt 2/3)...
+[AgentService] [REPORT_GENERATED] Structured research report generated successfully.
+[AgentService] [EXPORTING] Saving research report to exports directory...
+[AgentService] [COMPLETED] Research task completed. Report saved to: C:\Users\91767\Downloads\autonomous-research-agent\exports\next_generation_solar_panel_efficiency_2_1790512687592.md
+
+
+========================================
+TEST EXECUTION COMPLETE
+Timestamp: 2026-09-27 18:08:56
+========================================
+
+OVERALL RESULTS:
+  testServices.js   : 13/13 tests PASSED (ALL CORE SERVICES TESTS PASSED)
+  testApiRoutes.js  : 21/21 assertions PASSED (0 FAILED)
+  testE2E.js        :  9/9  assertions PASSED (0 FAILED)
+  TOTAL             : 43/43 ALL TESTS PASSED

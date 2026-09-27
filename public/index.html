@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Autonomous AI Research Agent</title>
+
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- FontAwesome Icons, Marked JS for Markdown Parsing & html2pdf.js for PDF export -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+  <!-- Top Header Navigation -->
+  <header class="app-header">
+    <div class="header-container">
+      <div class="brand">
+        <div class="brand-icon">
+          <i class="fa-solid fa-brain-circuit"></i>
+        </div>
+        <div class="brand-text">
+          <h1>Autonomous Research Agent</h1>
+          <span class="badge" id="providerBadge">AI Research Agent</span>
+        </div>
+      </div>
+      <div class="system-status" id="systemStatus">
+        <span class="status-indicator"></span>
+        <span class="status-text">Checking Configuration...</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-container">
+
+    <!-- Input Section Card -->
+    <section class="card input-card">
+      <div class="card-header">
+        <h2><i class="fa-solid fa-magnifying-glass"></i> Initiate Research Topic</h2>
+        <p>Enter a complex topic or question. The AI agent will autonomously decompose, search the live web, synthesize sources, and generate an empirical report.</p>
+      </div>
+
+      <form id="researchForm" class="research-form">
+        <div class="input-group">
+          <textarea 
+            id="topicInput" 
+            placeholder="e.g., Latest developments in AI automation in 2026..." 
+            rows="3" 
+            required
+            maxlength="300"
+          ></textarea>
+          <div class="input-footer">
+            <span class="char-counter"><span id="charCount">0</span>/300</span>
+          </div>
+        </div>
+
+        <!-- Sample Topic Chips -->
+        <div class="sample-topics">
+          <span class="label">Quick Start Topics:</span>
+          <button type="button" class="topic-chip" data-topic="Latest developments in AI automation in 2026">AI Automation 2026</button>
+          <button type="button" class="topic-chip" data-topic="Autonomous AI Agents in Software Engineering and DevOps">AI Agents in DevOps</button>
+          <button type="button" class="topic-chip" data-topic="Breakthroughs in Solid-State Battery technology for Electric Vehicles">Solid-State Batteries</button>
+          <button type="button" class="topic-chip" data-topic="Post-Quantum Cryptography standards and enterprise adoption">Post-Quantum Cryptography</button>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" id="startBtn" class="btn btn-primary">
+            <i class="fa-solid fa-bolt"></i>
+            <span>Start Autonomous Research</span>
+          </button>
+        </div>
+      </form>
+    </section>
+
+    <!-- Progress & Agent Execution Log Card -->
+    <section id="progressCard" class="card progress-card hidden">
+      <div class="card-header border-bottom">
+        <div class="progress-title">
+          <i class="fa-solid fa-circle-notch fa-spin spinner" id="agentSpinner"></i>
+          <div>
+            <h3>Autonomous Agent Execution</h3>
+            <span class="progress-stage-text" id="progressStageText">Initiating Research Workflow...</span>
+          </div>
+        </div>
+        <div class="progress-badge-group">
+          <span class="progress-percent" id="progressPercent">0%</span>
+          <span class="status-pill" id="agentStatusPill">INITIATING</span>
+        </div>
+      </div>
+
+      <!-- Step Progress Bar -->
+      <div class="progress-bar-container">
+        <div class="progress-bar" id="progressBar" style="width: 0%;"></div>
+      </div>
+
+      <!-- Live Log Stream Container -->
+      <div class="log-stream" id="logStream">
+        <!-- Log entries will be inserted here dynamically -->
+      </div>
+    </section>
+
+    <!-- Error Display Banner -->
+    <div id="errorBanner" class="alert alert-error hidden">
+      <i class="fa-solid fa-triangle-exclamation"></i>
+      <div class="alert-content">
+        <h4>Research Execution Failed</h4>
+        <p id="errorMessage">An unexpected error occurred.</p>
+      </div>
+      <button class="btn-close" id="dismissErrorBtn"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+
+    <!-- Generated Research Report Display -->
+    <section id="reportCard" class="card report-card hidden">
+
+      <!-- Action Bar -->
+      <div class="report-actions-bar">
+        <div class="report-meta">
+          <h2 id="reportTopicTitle">Research Report</h2>
+          <span class="timestamp" id="reportTimestamp"><i class="fa-regular fa-clock"></i> Generated Just Now</span>
+        </div>
+
+        <div class="action-buttons">
+          <button id="copyMarkdownBtn" class="btn btn-secondary">
+            <i class="fa-regular fa-copy"></i> Copy Markdown
+          </button>
+          <a id="downloadMdBtn" href="#" class="btn btn-secondary" download>
+            <i class="fa-solid fa-file-lines"></i> Download Markdown (.md)
+          </a>
+          <button id="downloadPdfBtn" class="btn btn-primary">
+            <i class="fa-solid fa-file-pdf"></i> Download PDF
+          </button>
+        </div>
+      </div>
+
+      <!-- Sub-questions Badge List -->
+      <div class="sub-questions-container" id="subQuestionsContainer">
+        <h4><i class="fa-solid fa-diagram-project"></i> Investigated Sub-Questions:</h4>
+        <ul id="subQuestionsList" class="sub-questions-list"></ul>
+      </div>
+
+      <!-- Verified Sources Strip -->
+      <div class="sources-strip" id="sourcesStrip">
+        <h4><i class="fa-solid fa-link"></i> Verified Web Sources:</h4>
+        <div id="sourcesList" class="sources-grid"></div>
+      </div>
+
+      <!-- Rendered Markdown Body Preview Container -->
+      <div class="report-preview-wrapper">
+        <div class="markdown-body" id="reportContent">
+          <!-- Rendered HTML will be injected here -->
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <footer class="app-footer">
+    <p>Autonomous AI Research Agent &bull; Built with Node.js, Express.js &amp; Groq API</p>
+  </footer>
+
+  <script src="/js/app.js"></script>
+</body>
+</html>

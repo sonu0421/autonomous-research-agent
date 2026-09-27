@@ -1,0 +1,31 @@
+{
+  "name": "autonomous-research-agent",
+  "version": "1.0.0",
+  "description": "An Autonomous Research Agent powered by Gemini API, Express.js, Node.js, and multi-tier live web search.",
+  "main": "src/server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "test": "node tests/testServices.js && node tests/testApiRoutes.js && node tests/testE2E.js"
+  },
+  "keywords": [
+    "autonomous-agent",
+    "gemini-api",
+    "express",
+    "research-agent",
+    "web-search",
+    "node-js"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@google/genai": "^2.24.0",
+    "axios": "^1.7.9",
+    "cheerio": "^1.0.0",
+    "dotenv": "^16.4.7",
+    "duck-duck-scrape": "^2.2.6",
+    "express": "^4.21.2",
+    "puppeteer-core": "^24.43.1"
+  }
+}
