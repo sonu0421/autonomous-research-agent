@@ -186,9 +186,16 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const config = stepConfigMap[step] || { percent: 50, label: step };
-    
-    progressBar.style.width = `${config.percent}%`;
-    progressPercent.textContent = `${config.percent}%`;
+
+    // Never let the progress bar go backwards (monotonic progress)
+    if (typeof window._maxProgressShown === 'undefined') window._maxProgressShown = 0;
+    // Reset on new job start
+    if (step === 'INITIATED') window._maxProgressShown = 0;
+    const shownPercent = Math.max(config.percent, window._maxProgressShown);
+    window._maxProgressShown = shownPercent;
+
+    progressBar.style.width = `${shownPercent}%`;
+    progressPercent.textContent = `${shownPercent}%`;
     agentStatusPill.textContent = step;
     progressStageText.textContent = detail || config.label;
   }
