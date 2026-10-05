@@ -491,29 +491,22 @@ export async function decomposeTopic(topic) {
     throw new Error('Research topic must be a non-empty string.');
   }
 
-  const systemMessage = `You are an Autonomous AI Search Query Engineer. Return ONLY a valid JSON array.`;
-  const prompt = `The user wants to conduct technical research on the BROAD topic: "${topic.trim()}".
+  const systemMessage = `You are an Autonomous Search Query Engineer. Return ONLY a valid JSON array.`;
+  const prompt = `The user wants to conduct research on the topic: "${topic.trim()}".
 
 Your task:
 1. Identify 5 to 6 DISTINCT, non-overlapping research dimensions that together span the full breadth of "${topic.trim()}".
    MANDATORY: Each sub-question MUST cover a DIFFERENT dimension. Do NOT generate multiple queries about the same narrow subtopic.
-   Example dimensions for an "AI automation" topic:
-   - AI agents and autonomous workflow orchestration
-   - Business process automation and RPA
-   - AI-assisted software development tools
-   - Customer support and conversational AI automation
-   - Industrial automation and robotics
-   - Enterprise adoption, governance, and reliability
 2. For EACH dimension, craft a short, keyword-dense WEB SEARCH QUERY (4 to 7 words) designed for Google/Bing.
-3. MANDATORY CRITERIA: Every search query MUST explicitly contain "AI", "Artificial Intelligence", "Autonomous Agents", or "LLM" and the year or domain keywords.
-4. DIVERSITY RULE: No two search queries may target the same narrow subtopic (e.g. do NOT generate two different queries both about "predictive maintenance").
-5. Do NOT use conversational filler like "latest developments in" or generic corporate terms without explicit AI keywords.
+3. MANDATORY CRITERIA: Every search query MUST be directly about "${topic.trim()}" — use the topic's own keywords. Do NOT inject unrelated terms like "AI", "LLM", or "automation" unless the topic itself is about AI.
+4. DIVERSITY RULE: No two search queries may target the same narrow subtopic.
+5. Do NOT use conversational filler like "latest developments in". Use specific, searchable keywords.
 
 Return ONLY a valid JSON array of objects with the following schema:
 [
   {
     "subQuestion": "Analytical sub-question covering a distinct dimension",
-    "searchQuery": "AI automation agentic workflow enterprise 2026"
+    "searchQuery": "electric vehicle benefits environment 2025"
   }
 ]
 Do not include any text outside the JSON array.`;
@@ -526,9 +519,9 @@ Do not include any text outside the JSON array.`;
     if (!jsonMatch) {
       console.warn('[GroqService] Could not parse raw JSON from query plan. Using default keyword queries.');
       return [
-        { subQuestion: `Technical AI breakthroughs in ${topic}`, searchQuery: `AI ${topic} breakthroughs 2026` },
-        { subQuestion: `Autonomous agent architectures in ${topic}`, searchQuery: `autonomous AI agents ${topic} enterprise 2026` },
-        { subQuestion: `LLM process automation trends in ${topic}`, searchQuery: `LLM agentic automation ${topic} 2026` },
+        { subQuestion: `Key developments in ${topic}`, searchQuery: `${topic} key developments 2026` },
+        { subQuestion: `Benefits and advantages of ${topic}`, searchQuery: `${topic} benefits advantages` },
+        { subQuestion: `Challenges and limitations of ${topic}`, searchQuery: `${topic} challenges limitations` },
       ];
     }
 
@@ -538,10 +531,7 @@ Do not include any text outside the JSON array.`;
     }
 
     const processed = queryPlan.map((item) => {
-      let q = String(item.searchQuery || item.subQuestion || '').trim();
-      if (!/\b(ai|artificial intelligence|machine learning|llm|agentic|autonomous agent)\b/i.test(q)) {
-        q = `AI ${q}`;
-      }
+      const q = String(item.searchQuery || item.subQuestion || '').trim();
       return {
         subQuestion: String(item.subQuestion || item.searchQuery || '').trim(),
         searchQuery: q,
@@ -579,15 +569,15 @@ Sources collected so far (${existingSources.length}):
 ${existingSources.map((s) => `- ${s.title} (${s.url})`).join('\n') || 'None'}
 ${gapContext}
 
-Craft 2 to 3 REFINED, high-intent, alternative web search queries (5 to 8 words) to uncover technical evidence directly relevant to "${topic.trim()}".
+Craft 2 to 3 REFINED, high-intent, alternative web search queries (5 to 8 words) to uncover evidence directly relevant to "${topic.trim()}".
 Each query MUST cover a DIFFERENT sub-area of the topic — do NOT repeat already-covered subtopics.
-Every refined query MUST include explicit AI terms (e.g. "AI", "LLM", "autonomous agents", "agentic automation") and year "2026" or core topic terms.
+Every refined query MUST use the topic's own keywords directly related to "${topic.trim()}". Do NOT inject unrelated terms like "AI" or "LLM" unless the topic is about AI.
 
 Return ONLY a valid JSON array of objects:
 [
   {
     "subQuestion": "Refined analytical aspect covering a new dimension",
-    "searchQuery": "AI agentic business process automation enterprise 2026"
+    "searchQuery": "electric vehicle battery technology 2026"
   }
 ]`;
 
@@ -599,10 +589,7 @@ Return ONLY a valid JSON array of objects:
       const refinedPlan = JSON.parse(jsonMatch[0]);
       if (Array.isArray(refinedPlan) && refinedPlan.length > 0) {
         return refinedPlan.map((item) => {
-          let q = String(item.searchQuery || item.subQuestion || '').trim();
-          if (!/\b(ai|artificial intelligence|machine learning|llm|agentic|autonomous agent)\b/i.test(q)) {
-            q = `AI ${q}`;
-          }
+          const q = String(item.searchQuery || item.subQuestion || '').trim();
           return {
             subQuestion: String(item.subQuestion || item.searchQuery || '').trim(),
             searchQuery: q,
@@ -615,8 +602,8 @@ Return ONLY a valid JSON array of objects:
   }
 
   return [
-    { subQuestion: `Advanced technical frameworks for ${topic}`, searchQuery: `AI autonomous agents workflow automation 2026 trends` },
-    { subQuestion: `Enterprise implementation benchmarks for ${topic}`, searchQuery: `agentic AI process automation enterprise report 2026` },
+    { subQuestion: `Technical deep-dive on ${topic}`, searchQuery: `${topic} technical analysis 2026` },
+    { subQuestion: `Recent developments in ${topic}`, searchQuery: `${topic} latest developments report` },
   ];
 }
 
