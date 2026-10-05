@@ -184,11 +184,35 @@ export async function runResearchTask(topic, statusCallback = () => {}) {
     }
   }
 
-  // FAIL FAST: Abort if no relevant sources were found
+  // GRACEFUL DEGRADATION: If strict filter rejected everything, fall back to
+  // the best raw sources (ranked by quality tier) so a report can still be
+  // generated instead of failing outright.
   if (relevantResults.length === 0) {
-    const failMsg = `Research Failed: Zero verified web sources relevant to "${sanitizedTopic}" could be retrieved. Workflow aborted to prevent misleading reports.`;
-    logProgress('FAILED', failMsg);
-    throw new Error(failMsg);
+    // Collect every raw source seen (initial + refined), deduped by URL
+    const allRawMap = new Map();
+    for (const s of deduplicatedResults) {
+      if (s.url && !allRawMap.has(s.url)) allRawMap.set(s.url, s);
+    }
+    const allRaw = Array.from(allRawMap.values());
+    if (allRaw.length === 0) {
+      const failMsg = `Research Failed: No web sources could be retrieved for "${sanitizedTopic}".`;
+      logProgress('FAILED', failMsg);
+      throw new Error(failMsg);
+    }
+    // Rank by quality tier (Tier 1 best) then by snippet length as tiebreak
+    const tierRank = (s) => {
+      const t = (s.qualityTier || '').toLowerCase();
+      if (t.includes('tier 1')) return 0;
+      if (t.includes('tier 2')) return 1;
+      if (t.includes('tier 3')) return 2;
+      return 3;
+    };
+    allRaw.sort((a, b) => tierRank(a) - tierRank(b) || ((b.snippet || '').length - (a.snippet || '').length));
+    relevantResults = allRaw.slice(0, Math.max(MIN_RELEVANT_SOURCES, 5));
+    logProgress(
+      'FALLBACK_SOURCES',
+      `Strict relevance filter rejected all sources. Falling back to top ${relevantResults.length} raw sources by quality tier. Report will note limited verification.`
+    );
   }
 
   // Step 4c: Apply Domain Diversity Cap (max 2 per domain while preserving sufficient evidence)
