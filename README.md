@@ -1,6 +1,16 @@
-# 🤖 Autonomous AI Research Agent
+# 🤖 Autonomous Research Agent
 
-An autonomous research system built with **Node.js, Express.js, Google Gemini API (`@google/genai`)**, and a multi-tiered live web search engine. The application accepts a high-level research topic, autonomously decomposes it into targeted search sub-questions, scrapes live web data, synthesizes findings using Gemini AI reasoning, and outputs a structured Markdown report with source citations and export capabilities.
+> **🌐 Live Demo:** https://autonomous-research-agent-ioye.onrender.com
+
+An autonomous research system built with **Node.js, Express.js, Groq AI**, and a multi-tiered live web search engine. Enter any research topic — the agent decomposes it into targeted search queries, scrapes live web data, synthesizes findings using Groq AI reasoning, and outputs a structured Markdown report with source citations and export capabilities.
+
+## 📸 Screenshots
+
+![Landing Page](screenshots/landing.png)
+*Enter your research topic to begin*
+
+![Research in Progress](screenshots/progress.png)
+*Live progress tracking with real-time execution log*
 
 ---
 
